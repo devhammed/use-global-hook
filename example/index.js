@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { GlobalHooksProvider, useGlobalHook } from '../src'
+import { GlobalHooksProvider, useGlobalHook, createGlobalHook } from '../src'
 
 import './index.css'
 
-const store = () => {
+const counterStoreHook = createGlobalHook('counterStore', () => {
   const [count, setCount] = React.useState(0)
 
   const increment = () => setCount(count + 1)
@@ -12,10 +12,10 @@ const store = () => {
   const reset = () => setCount(0)
 
   return { count, increment, decrement, reset }
-}
+})
 
 function Counter () {
-  const { count, increment, decrement, reset } = useGlobalHook('store')
+  const { count, increment, decrement, reset } = useGlobalHook('counterStore')
 
   return (
     <div>
@@ -29,7 +29,7 @@ function Counter () {
 
 function App () {
   return (
-    <GlobalHooksProvider hooks={{ store }}>
+    <GlobalHooksProvider hooks={[ counterStoreHook ]}>
       <h1>use-GLOBAL-hook</h1>
       <Counter />
       <Counter />
