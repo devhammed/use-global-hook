@@ -1,0 +1,52 @@
+{
+  "name": "@devhammed/use-global-hook",
+  "version": "1.0.0",
+  "description": "Painless global state management for React using Hooks and Context API in 1KB!",
+  "main": "lib/index.js",
+  "types": "index.d.ts",
+  "private": false,
+  "homepage": "https://devhammed.github.io/use-global-hook",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devhammed/use-global-hook"
+  },
+  "scripts": {
+    "clean": "rm -rf lib",
+    "build": "rollup -c",
+    "prepublish": "npm run clean && npm run build",
+    "example": "parcel example/index.html",
+    "predeploy": "rm -rf .cache && rm -rf dist && parcel build example/index.html",
+    "deploy": "gh-pages -d dist"
+  },
+  "files": [
+    "lib",
+    "index.d.ts"
+  ],
+  "keywords": [
+    "react",
+    "state",
+    "store",
+    "hooks",
+    "context-api"
+  ],
+  "author": "Hammed Oyedele <itz.harmid@gmail.com> (https://devhammed.github.io)",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "^6.26.3",
+    "gh-pages": "^2.0.1",
+    "parcel": "^1.12.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "rollup": "^1.12.3",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-cleanup": "^3.1.1",
+    "rollup-plugin-terser": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0"
+  }
+}
