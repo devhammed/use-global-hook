@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "index.d.ts",
   "private": false,
-  "homepage": "https://devhammed.github.io/use-global-hook",
+  "homepage": "https://devhammed.github.io/use-global-hook/",
   "repository": {
     "type": "git",
     "url": "https://github.com/devhammed/use-global-hook"
@@ -15,7 +15,7 @@
     "build": "rollup -c",
     "prepublish": "npm run clean && npm run build",
     "example": "parcel example/index.html",
-    "predeploy": "rm -rf .cache && rm -rf dist && parcel build example/index.html",
+    "predeploy": "rm -rf .cache && rm -rf dist && parcel build example/index.html --public-url /use-global-hook",
     "deploy": "gh-pages -d dist -m 'build: new release'"
   },
   "files": [
