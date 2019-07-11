@@ -13,9 +13,9 @@ npm install @devhammed/use-global-hook
 ```jsx
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { GlobalHooksProvider, useGlobalHook } from '@devhammed/use-global-hook'
+import { GlobalHooksProvider, createGlobalHook, useGlobalHook } from '@devhammed/use-global-hook'
 
-const store = () => {
+const store = createGlobalHook(/** 1 **/ 'counterStore', () => {
   const [count, setCount] = React.useState(0)
 
   const increment = () => setCount(count + 1)
@@ -23,10 +23,10 @@ const store = () => {
   const reset = () => setCount(0)
 
   return { count, increment, decrement, reset }
-}
+})
 
 function Counter () {
-  const { count, increment, decrement, reset } = useGlobalHook('store') /** Name of the store passed in hooks object below **/
+  const { count, increment, decrement, reset } = useGlobalHook('counterStore') /** 1. This is where you use the name you defined in `createGlobalHook` function, this name should be unique through out your app **/
 
   return (
     <div>
@@ -38,14 +38,17 @@ function Counter () {
   )
 }
 
-ReactDOM.render(
-  <GlobalHooksProvider hooks={{ store }}>
-    <Counter />
-    <Counter />
-    <Counter />
-  </GlobalHooksProvider>,
-  document.getElementById('root')
-)
+function App () {
+  return (
+    <GlobalHooksProvider hooks={[ store ]}>
+      <Counter />
+      <Counter />
+      <Counter />
+    </GlobalHooksProvider>
+  )
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
 ```
 
 Notice how we render the `Counter` component three times? clicking on a button in one of the component instance will update others too.
@@ -63,22 +66,27 @@ It has three pieces:
 
 ##### `Store`
 
-It's a place to store our state and some of the logic for updating it.
+A hook store is a place to store state and some of the logic for updating it.
 
-A Store is simply a React Hook (which means you can re-use it, use other hooks within it, etc).
+Store is a very simple React hook wrapper (which means you can re-use it, use other hooks within it, etc).
 
-You can use anything as a store as far as it is a React Hook.
+`createGlobalHook` is a Hook store function wrapper, this function is used to apply some internally used property to a function that calls your original hook function. A wrapper function is best for this case as it is not a good practice to mutate your original function with properties that may conflict and third-party hooks is taking into consideration where it is not good to add properties to the library core exports and this method also allows creating clone of same hook function without conflicting instances.
+
+Wrapping the function means, in case of when creating dynamic hook function, any argument you intend to pass to your hook when will be applied automatically, you still have your function the way you declare it and the way you intend to use it --- cheers! e.g  something like `store(props.dynamicValue)` though this can only happen when registering the hook function in `<GlobalHooksProvider />`.
 
 ```js
 import { useState } from 'React'
+import { createGlobalHook } from '@devhammed/use-global-hook'
 
-const store = () => {
-  const [state, setState] = useState({ test: true })
+const store = createGlobalHook('counterStore', () => {
+  const [count, setCount] = React.useState(0)
 
-  const update = val => setState(val)
+  const increment = () => setCount(count + 1)
+  const decrement = () => setCount(count - 1)
+  const reset = () => setCount(0)
 
-  return { state, update }
-}
+  return { count, increment, decrement, reset }
+})
 ```
 
 Note that stores use `useState` hook from React for managing state.
@@ -94,7 +102,7 @@ Next we'll need a piece to introduce our state back into the tree so that:
 - We can call functions exposed by the store.
 
 For this we have the `useGlobalHook` hook which allows us to get global store instances
-by using passing the name of the store used in the hooks object in `<GlobalHooksProvider>`.
+by using passing the value of the  "globalHookName" property of the hook store function.
 
 ```jsx
 function Counter () {
@@ -113,12 +121,12 @@ function Counter () {
 ##### `<GlobalHooksProvider>`
 The `<GlobalHooksProvider>` component has two roles:
 
-1. It initializes global instances of given hooks object (this is required because React expects the number of hooks to be consistent across re-renders)
+1. It initializes global instances of given hooks array (an Array is required because React expects the number of hooks to be consistent across re-renders and Objects are not guaranteed to return in same order)
 2. It uses context to pass initialized instances of given stores to all the components down the tree.
 
 ```jsx
 ReactDOM.render(
-  <GlobalHooksProvider hooks={{ counterStore }}>
+  <GlobalHooksProvider hooks={[ counterStore ]}>
     <Counter />
   </GlobalHooksProvider>
 );
