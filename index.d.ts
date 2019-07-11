@@ -32,13 +32,25 @@ import React, { FC } from 'react'
  * When you call setState it triggers components to re-render, so be careful not
  * to mutate state directly or your components won't re-render.
  */
-export declare type StoreHook<GHookReturn = any> = () => GHookReturn;
+export declare type StoreHook = () => any
+
+/**
+ * Collection of Store Hooks
+ */
+export declare type StoreHooks = {
+  [key: string]: StoreHook
+}
+
+/**
+ * Global Store Hooks context container
+ */
+export declare const GlobalHooksContext: React.Context<StoreHooks>
 
 export interface GlobalHooksProviderProps {
   /**
-   * An array of hooks that will be available to retrieve with useGlobalHook
+   * An object of hooks that will be available to retrieve with useGlobalHook
    */
-  hooks: StoreHook[],
+  hooks: StoreHooks
 
   /**
    * An array of React element children
@@ -87,6 +99,4 @@ export declare function GlobalHooksProvider(props: GlobalHooksProviderProps): FC
  * }
  * ```
  */
-export declare function useGlobalHook(
-  name: string
-): StoreHook
+export declare function useGlobalHook(key: string): StoreHook
