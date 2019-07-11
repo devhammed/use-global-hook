@@ -16,7 +16,7 @@
     "prepublish": "npm run clean && npm run build",
     "example": "parcel example/index.html",
     "predeploy": "rm -rf .cache && rm -rf dist && parcel build example/index.html",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist -m 'build: new release'"
   },
   "files": [
     "lib",
