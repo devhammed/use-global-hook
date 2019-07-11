@@ -1,9 +1,9 @@
 /**
- * @file
  * use-global-hook is built on top of React hooks, context and patterns surrounding those elements.
  *
- * It has three pieces:
+ * It has four pieces:
  * - hooks
+ * - createGlobalHook
  * - useGlobalHook
  * - `<GlobalHooksProvider />`
  */
@@ -14,18 +14,23 @@ import React, { FC } from 'react'
  * A hook store is a place to store state and some of the logic for updating it.
  *
  * Store is a very simple React hook (which means you can re-use it, use other
- * hooks within it, etc).
+ * hooks within it, use your existing custom or third-party hooks, etc).
+ *
+ * You should wrap the hook function in `createGlobalHook` function with the first parameter which is the unique identifier for the hook.
+ *
+ * Wrapping the function means, in case of when creating dynamic hook function, any argument you intend to pass to your hook when will be applied automatically, you still have your function the way you declare it --- cheers! e.g  something like `counterStore(props.dynamicValue)` though this can only happen when registering the hook function in `<GlobalHooksProvider />`.
  *
  * ```tsx
  * import { useState } from 'react'
+ * import { createGlobalHook } from '@devhammed/use-global-hook'
  *
- * const counterStore = () => {
+ * const counterStore = createGlobalHook('counterStore', () => {
  *   const [count, setCount] = useState(0)
  *   const increment = () => setCount(count + 1)
  *   const decrement = () => setCount(count - 1)
  *
  *   return { count, increment, decrement }
- * }
+ * })
  * ```
  *
  * Note that hooks prop use useState hook from React for managing state
@@ -33,6 +38,11 @@ import React, { FC } from 'react'
  * to mutate state directly or your components won't re-render.
  */
 export declare type StoreHook = () => any
+
+/**
+ * Hook store function wrapper, this function apply some internally used property to a function that calls your original function. A wrapper function is best for this case as it is not a good idea to mutate your original function with properties that may conflict and third-party hooks is always taking into consideration where it is not good to add properties to the library core function and this method also allows creating clone of same hook function without conflicting names.
+ */
+export declare type createGlobalHook = (name: string, fn: (...args) => any) => any
 
 /**
  * Collection of Store Hooks
@@ -68,7 +78,7 @@ export interface GlobalHooksProviderProps {
  *
  * ```tsx
  * ReactDOM.render(
- *   <GlobalHooksProvider hooks={{ counterStore }}>
+ *   <GlobalHooksProvider hooks={[ counterStore ]}>
  *     <Counter />
  *     <Counter />
  *   </GlobalHooksProvider>
@@ -87,7 +97,7 @@ export declare function GlobalHooksProvider(props: GlobalHooksProviderProps): FC
  *
  * ```tsx
  * function Counter() {
- *   const { count, decrement, increment } = useGlobalHook('counterStore')
+ *   const { count, decrement, increment } = useGlobalHook('counterStore') // value of the hook function "globalHookName" property
  *
  *   return (
  *     <div>
