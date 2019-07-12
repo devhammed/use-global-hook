@@ -75,7 +75,7 @@ Store is a very simple React hook wrapper (which means you can re-use it, use ot
 Wrapping the function means, in case of when creating dynamic hook function, any argument you intend to pass to your hook when will be applied automatically, you still have your function the way you declare it and the way you intend to use it --- cheers! e.g  something like `store(props.dynamicValue)` though this can only happen when registering the hook function in `<GlobalHooksProvider />`.
 
 ```js
-import { useState } from 'React'
+import React from 'React'
 import { createGlobalHook } from '@devhammed/use-global-hook'
 
 const store = createGlobalHook('counterStore', () => {
@@ -89,9 +89,7 @@ const store = createGlobalHook('counterStore', () => {
 })
 ```
 
-Note that stores use `useState` hook from React for managing state.
-When you call `setState` it triggers components to re-render,
-so be careful not to mutate `state` directly or your components won't re-render.
+This example uses the official React `useState()` hook, but you are not limited to this only, there are other hooks like `useReducer()` if you need something like Redux or any custom or third-party hook as far as it follows the Rules of Hooks, you can read more on Hooks on React official website [here](https://reactjs.org/docs/hooks-intro.html).
 
 ##### `useGlobalHook`
 
@@ -101,8 +99,7 @@ Next we'll need a piece to introduce our state back into the tree so that:
 - We can depend on our store state.
 - We can call functions exposed by the store.
 
-For this we have the `useGlobalHook` hook which allows us to get global store instances
-by using passing the value of the  "globalHookName" property of the hook store function.
+For this we have the `useGlobalHook` hook which allows us to get global store instances by using passing the value we used when creating the global hook with `createGlobalHook` function.
 
 ```jsx
 function Counter () {
@@ -158,4 +155,3 @@ test('counter', async () => {
 
 - [Outstated](https://github.com/yamalight/outstated)
 - [Unstated](https://github.com/jamiebuilds/unstated)
-- [React Hooks](https://reactjs.org/docs/hooks-intro.html)

@@ -69,10 +69,9 @@ export interface GlobalHooksProviderProps {
 }
 
 /**
- * The final piece is `<GlobalHooksProvider>` component. It has two roles:
+ * The `<GlobalHooksProvider>` component has two roles:
  *
- * - It initializes global instances of given hooks (this is required because React
- * expects the number of hooks to be consistent across re-renders)
+ * - It initializes global instances of given hooks array (an Array is required because React expects the number of hooks to be consistent across re-renders and Objects are not guaranteed to return in same order)
  * - It uses context to pass initialized instances of given hooks to all the components
  * down the tree
  *
@@ -90,14 +89,15 @@ export declare function GlobalHooksProvider(props: GlobalHooksProviderProps): FC
 /**
  * Next we'll need a piece to introduce our state back into the tree so that:
  *
- * When state changes, our components re-render.
- * We can depend on our store state.
- * We can call functions exposed by the store.
- * For this we have the useGlobalHook hook which allows us to get global store instances by using specific store constructor.
+ * - When state changes, our components re-render.
+ * - We can depend on our store state.
+ * - We can call functions exposed by the store.
+ *
+ * For this we have the `useGlobalHook` hook which allows us to get global store instances by using passing the value we used when creating the global hook with `createGlobalHook` function.
  *
  * ```tsx
  * function Counter() {
- *   const { count, decrement, increment } = useGlobalHook('counterStore') // value of the hook function "globalHookName" property
+ *   const { count, decrement, increment } = useGlobalHook('counterStore')
  *
  *   return (
  *     <div>
