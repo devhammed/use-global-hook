@@ -42,7 +42,7 @@ export declare type StoreHook = () => any
 /**
  * Hook store function wrapper, this function apply some internally used property to a function that calls your original function. A wrapper function is best for this case as it is not a good idea to mutate your original function with properties that may conflict and third-party hooks is always taking into consideration where it is not good to add properties to the library core function and this method also allows creating clone of same hook function without conflicting names.
  */
-export declare type createGlobalHook = (name: string, fn: (...args) => any) => any
+export declare function createGlobalHook(name: string, fn: (...args) => any): any
 
 /**
  * Collection of Store Hooks
