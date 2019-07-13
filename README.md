@@ -2,6 +2,8 @@
 
 > Painless global state management for React using Hooks and Context API in 1KB!
 
+[![NPM](https://img.shields.io/npm/v/@devhammed/use-global-hook.svg)](https://www.npmjs.com/package/@devhammed/use-cookie) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
 ## Installation
 
 ```sh
@@ -57,12 +59,7 @@ See it running live [here](https://devhammed.github.io/use-global-hook).
 
 ### Concepts
 
-use-global-hook is built on top of React Hooks, context
-and patterns surrounding those elements.
-
-It was adapted from [Outstated](https://github.com/yamalight/outstated) which is almost similar but I removed the need to import store when needed in a component.
-
-It has three pieces:
+use-global-hook is built on top of React Hooks and Context API. I first used this concept in a project at my workplace [Epower](https://epower.ng) and seeing the re-usability and convenience, I decided to convert it to a standalone open-source library for others to benefit from the awesomeness of React Hooks.
 
 ##### `Store`
 
@@ -206,15 +203,14 @@ use-global-hook supports nesting `GlobalHooksProvider` which means child compone
   ReactDOM.render(<App />, document.getElementById('root'))
 ```
 
-[View Demo](https://codesandbox.io/s/eloquent-leaf-6fhi2)
+[View Demo](https://6fhi2.codesandbox.io)
 
 See how the `Time` components wrapped by `Timer` are able to access both `counterStore` and `timerStore`?
 When you render `GlobalHooksProvider`, one of the things it does under the hood is to try to use it parent global context, If it is undefined this means that it is the root else it merges with the parent context and you are able to access any store hook from parent(s) but the parent cannot access child nested global state because data flows in one direction else you define a function in global state that will communicate to other component.
 
 ### Testing
 
-Because our containers are just hooks, we can construct them in
-tests and assert different things about them very easily.
+Global Hooks are just your regular hooks too, so you can easily test with `react-hooks-testing-library` library e.g
 
 ```js
 import { renderHook, act } from 'react-hooks-testing-library'
@@ -232,8 +228,3 @@ test('counter', async () => {
   expect(count).toBe(0)
 })
 ```
-
-## Related
-
-- [Outstated](https://github.com/yamalight/outstated)
-- [Unstated](https://github.com/jamiebuilds/unstated)
