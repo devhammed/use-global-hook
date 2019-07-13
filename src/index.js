@@ -4,11 +4,16 @@ const GlobalHooksContext = React.createContext()
 
 export function GlobalHooksProvider ({ hooks, children }) {
   let globalHooks = {}
+  let parentContext = React.useContext(GlobalHooksContext)
 
   if ({}.toString.call(hooks) !== '[object Array]') {
     throw new TypeError(
       'You must provide a hooks array to initialize <GlobalHooksProvider> for initialization!'
     )
+  }
+
+  if (parentContext) {
+    globalHooks = { ...parentContext }
   }
 
   hooks.map(hook => {
@@ -52,7 +57,7 @@ export function createGlobalHook (name, fn) {
 }
 
 export function useGlobalHook (name) {
-  var context = React.useContext(GlobalHooksContext)
+  const context = React.useContext(GlobalHooksContext)
 
   if (!context) {
     throw new SyntaxError(
@@ -60,11 +65,7 @@ export function useGlobalHook (name) {
     )
   }
 
-  if (!name) {
-    return context
-  }
-
-  var value = context[name]
+  const value = context[name]
 
   if (!value) {
     throw new ReferenceError(
