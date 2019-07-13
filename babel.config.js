@@ -8,7 +8,6 @@ module.exports = {
         },
         loose: true
       }
-    ],
-    '@babel/preset-react'
+    ]
   ]
 }
