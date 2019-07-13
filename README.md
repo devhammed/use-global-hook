@@ -116,7 +116,7 @@ function Counter () {
 ```
 
 ##### `<GlobalHooksProvider>`
-The `<GlobalHooksProvider>` component has two roles:
+The `<div>` component has two roles:
 
 1. It initializes global instances of given hooks array (an Array is required because React expects the number of hooks to be consistent across re-renders and Objects are not guaranteed to return in same order)
 2. It uses context to pass initialized instances of given stores to all the components down the tree.
@@ -128,6 +128,88 @@ ReactDOM.render(
   </GlobalHooksProvider>
 );
 ```
+
+### Nesting Providers
+use-global-hook supports nesting `GlobalHooksProvider` which means child components can have their own global state and still be able to access their parent or root global state. Take a look at below example, explanation comes after it.
+
+```js
+  import React from 'react'
+  import ReactDOM from 'react-dom'
+  import {
+    GlobalHooksProvider,
+    useGlobalHook,
+    createGlobalHook
+  } from '@devhammed/use-global-hook'
+
+  const counterStoreHook = createGlobalHook('counterStore', () => {
+    const [count, setCount] = React.useState(0)
+
+    const increment = () => setCount(count + 1)
+    const decrement = () => setCount(count - 1)
+    const reset = () => setCount(0)
+
+    return { count, increment, decrement, reset }
+  })
+
+  const timerHook = createGlobalHook('timerStore', () => {
+    const [time, setTime] = React.useState(new Date())
+
+    React.useEffect(() => {
+      const id = setInterval(() => setTime(new Date()), 1000)
+      return () => clearInterval(id)
+    }, [])
+
+    return time
+  })
+
+  function Time () {
+    const time = useGlobalHook('timerStore')
+    const { count } = useGlobalHook('counterStore')
+
+    return <p>{time.toString()} - {count}</p>
+  }
+
+  function Timer () {
+    return (
+      <GlobalHooksProvider hooks={[ timerHook ]}>
+        <Time />
+        <Time />
+        <Time />
+      </GlobalHooksProvider>
+    )
+  }
+
+  function Counter () {
+    const { count, increment, decrement, reset } = useGlobalHook('counterStore')
+
+    return (
+      <div>
+        <button onClick={decrement}>-</button>
+        <span>{count}</span>
+        <button onClick={increment}>+</button>
+        <button onClick={reset}>reset</button>
+      </div>
+    )
+  }
+
+  function App () {
+    return (
+      <GlobalHooksProvider hooks={[ counterStoreHook ]}>
+        <Timer />
+        <Counter />
+        <Counter />
+        <Counter />
+      </GlobalHooksProvider>
+    )
+  }
+
+  ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+[View Demo](https://codesandbox.io/s/eloquent-leaf-6fhi2)
+
+See how the `Time` components wrapped by `Timer` are able to access both `counterStore` and `timerStore`?
+When you render `GlobalHooksProvider`, one of the things it does under the hood is to try to use it parent global context, If it is undefined this means that it is the root else it merges with the parent context and you are able to access any store hook from parent(s) but the parent cannot access child nested global state because data flows in one direction else you define a function in global state that will communicate to other component.
 
 ### Testing
 
