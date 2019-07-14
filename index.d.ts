@@ -42,7 +42,10 @@ export declare type StoreHook = () => any
 /**
  * Hook store function wrapper, this function apply some internally used property to a function that calls your original function. A wrapper function is best for this case as it is not a good idea to mutate your original function with properties that may conflict and third-party hooks is always taking into consideration where it is not good to add properties to the library core function and this method also allows creating clone of same hook function without conflicting names.
  */
-export declare function createGlobalHook(name: string, fn: (...args) => any): (...args) => any
+export declare function createGlobalHook(
+  name: string,
+  fn: (...args) => any
+): (...args) => any
 
 /**
  * Collection of Store Hooks
@@ -110,3 +113,18 @@ export declare function GlobalHooksProvider(props: GlobalHooksProviderProps): FC
  * ```
  */
 export declare function useGlobalHook(key: string): StoreHook
+
+/**
+ * Class components can benefit from hooks too!
+ *
+ * You heard that right, who says class component cannot use and benefit from the awesomeness of React hooks?
+use-global-hooks provides a function component HOC wrapper `withGlobalHooks` which allows class components to use hooks state(s) by passing them props. cool right? let's look at how above Counter component will look when using a class.
+ * It is as easy as using function component too, just pass in your component variable as the first parameter and second parameter is an array that contains names of the global hooks you want to use and you will be able access the state from `this.props.[globalHookName]`.
+ * The HOC wrapper pass down props so any other prop you are using in your component still works fine except if there is prop conflict which is why it is recommended you add `Store` suffix to your store names when creating them.
+ * So with support for class component, you can start using this library even when you are not ready to switch to function components.
+ * NOTE: You can also use `withGlobalHooks` with function components but why not just use the hook? :wink:
+ */
+export declare function withGlobalHooks(
+  component: React.ReactElement,
+  hooks: string[]
+): React.FunctionComponent
