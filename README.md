@@ -208,6 +208,39 @@ use-global-hook supports nesting `GlobalHooksProvider` which means child compone
 See how the `Time` components wrapped by `Timer` are able to access both `counterStore` and `timerStore`?
 When you render `GlobalHooksProvider`, one of the things it does under the hood is to try to use it parent global context, If it is undefined this means that it is the root else it merges with the parent context and you are able to access any store hook from parent(s) but the parent cannot access child nested global state because data flows in one direction else you define a function in global state that will communicate to other component.
 
+### Class Components
+You heard that right, who says class component cannot use and benefit from the awesomeness of React hooks?
+use-global-hooks provides a function component HOC wrapper `withGlobalHooks` which allows class components to use hooks state(s) by passing them props. cool right? let's look at how above Counter component will look when using a class.
+
+```js
+  // Counter.js
+
+  import { withGlobalHooks } from '@devhammed/use-global-hook'
+
+  class Counter extends React.Component {
+    render () {
+      const { count, increment, decrement, reset } = this.props.counterStore
+
+      return (
+        <div>
+          <button onClick={decrement}>-</button>
+          <span>{count}</span>
+          <button onClick={increment}>+</button>
+          <button onClick={reset}>reset</button>
+        </div>
+      )
+    }
+  }
+
+  export default withGlobalHooks(Counter, ['counterStore'])
+```
+
+It is as easy as using function component too, just pass in your component variable as the first parameter and second parameter is an array that contains names of the global hooks you want to use and you will be able access the state from `this.props.[globalHookName]`. The HOC wrapper pass down props so any other prop you are using in your component still works fine except if there is prop conflict which is why it is recommended you add `Store` suffix to your store names when creating them.
+
+So with support for class component, you can start using this library even when you are not ready to switch to function components.
+
+NOTE: You can also use `withGlobalHooks` with function components but why not just use the hook? :wink:
+
 ### Testing
 
 Global Hooks are just your regular hooks too, so you can easily test with `react-hooks-testing-library` library e.g
