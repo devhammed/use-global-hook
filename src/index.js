@@ -75,3 +75,29 @@ export function useGlobalHook (name) {
 
   return value
 }
+
+export function withGlobalHooks (component, hooks) {
+  if (!component) {
+    throw new TypeError('You cannot pass in empty value to withGlobalHooks!')
+  }
+
+  if ({}.toString.call(hooks) !== '[object Array]') {
+    throw new TypeError(
+      'You must provide a hooks array to initialize the withGlobalHooks!'
+    )
+  }
+
+  const withGlobalHOC = props => {
+    const stores = {}
+
+    hooks.map(hook => {
+      stores[hook] = useGlobalHook(hook)
+    })
+
+    return React.createElement(component, { ...props, ...stores })
+  }
+
+  withGlobalHOC.displayName = `withGlobalHooks(${component.name})`
+
+  return withGlobalHOC
+}
