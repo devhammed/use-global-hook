@@ -123,6 +123,27 @@ use-global-hooks provides a function component HOC wrapper `withGlobalHooks` whi
  * The HOC wrapper pass down props so any other prop you are using in your component still works fine except if there is prop conflict which is why it is recommended you add `Store` suffix to your store names when creating them.
  * So with support for class component, you can start using this library even when you are not ready to switch to function components.
  * NOTE: You can also use `withGlobalHooks` with function components but why not just use the hook? :wink:
+ *
+ * ```tsx
+ * import { withGlobalHooks } from '@devhammed/use-global-hook'
+ *
+ * class Counter extends React.Component {
+ *   render () {
+ *     const { count, increment, decrement, reset } = this.props.counterStore
+ *
+ *      return (
+ *        <div>
+ *          <button onClick={decrement}>-</button>
+ *          <span>{count}</span>
+ *          <button onClick={increment}>+</button>
+ *          <button onClick={reset}>reset</button>
+ *        </div>
+ *     )
+ *   }
+ * }
+ *
+ * export default withGlobalHooks(Counter, ['counterStore'])
+ * ```
  */
 export declare function withGlobalHooks(
   component: React.ReactElement,
