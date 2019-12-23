@@ -1,6 +1,6 @@
 {
   "name": "@devhammed/use-global-hook",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Painless global state management for React using Hooks and Context API in 1KB!",
   "main": "lib/index.js",
   "types": "index.d.ts",
