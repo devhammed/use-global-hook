@@ -4,7 +4,9 @@ import { GlobalHooksProvider, useGlobalHook, createGlobalHook } from '../src'
 
 import './index.css'
 
-const counterStoreHook = createGlobalHook('counterStore', () => {
+const COUNTER_STORE = 'counterStore'
+
+const counterStoreHook = createGlobalHook(COUNTER_STORE, () => {
   const [count, setCount] = React.useState(0)
 
   const increment = () => setCount(count + 1)
@@ -15,7 +17,7 @@ const counterStoreHook = createGlobalHook('counterStore', () => {
 })
 
 function Counter () {
-  const { count, increment, decrement, reset } = useGlobalHook('counterStore')
+  const { count, increment, decrement, reset } = useGlobalHook(COUNTER_STORE)
 
   return (
     <div>
