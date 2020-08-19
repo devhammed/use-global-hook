@@ -261,3 +261,57 @@ test('counter', async () => {
   expect(count).toBe(0)
 })
 ```
+
+### Pro-Tip
+
+Create a file like `storeNames.{js,ts}` that contains names of your stores so you can re-use the strings to avoid making mistake when typing or when refactoring so you will have to change the names in one place, see example below:
+
+```js
+// utils/storeNames.js
+
+export const API_STORE = 'apiStore'
+
+export const COUNTER_STORE = 'counterStore'
+```
+
+Then you can create your store like this...
+
+```js
+// utils/mainStore.js
+
+import { COUNTER_STORE } from '../utils/storeNames.js'
+
+const counterStoreHook = createGlobalHook(COUNTER_STORE, () => {
+    const [count, setCount] = React.useState(0)
+
+    const increment = () => setCount(count + 1)
+    const decrement = () => setCount(count - 1)
+    const reset = () => setCount(0)
+
+    return { count, increment, decrement, reset }
+  })
+
+```
+
+Then register in your root component and you use it anywhere like this:
+
+```jsx
+// pages/counter.js
+
+import { COUNTER_STORE } from '../utils/storeNames.js'
+
+function Counter () {
+    const { count, increment, decrement, reset } = useGlobalHook(COUNTER_STORE)
+
+    return (
+      <div>
+        <button onClick={decrement}>-</button>
+        <span>{count}</span>
+        <button onClick={increment}>+</button>
+        <button onClick={reset}>reset</button>
+      </div>
+    )
+  }
+```
+
+Nice and Clean!
