@@ -4,11 +4,11 @@ const GlobalHooksContext = React.createContext()
 
 export function GlobalHooksProvider ({ hooks, children }) {
   let globalHooks = {}
-  let parentContext = React.useContext(GlobalHooksContext)
+  const parentContext = React.useContext(GlobalHooksContext)
 
   if ({}.toString.call(hooks) !== '[object Array]') {
     throw new TypeError(
-      'You must provide a hooks array to initialize <GlobalHooksProvider>!'
+      'You must provide a hooks array to initialize <GlobalHooksProvider>.'
     )
   }
 
@@ -19,7 +19,7 @@ export function GlobalHooksProvider ({ hooks, children }) {
   hooks.map(hook => {
     if (typeof hook !== 'function') {
       throw new TypeError(
-        `Provided global hook value "${hook}" is not a function!`
+        `Provided global hook value "${hook}" is not a function.`
       )
     }
 
@@ -49,7 +49,7 @@ export function GlobalHooksProvider ({ hooks, children }) {
 
 export function createGlobalHook (name, fn) {
   if (typeof fn !== 'function') {
-    throw new TypeError(`Provided hook value for "${name}" is not a function!`)
+    throw new TypeError(`Provided hook value for "${name}" is not a function.`)
   }
 
   const globalHookFunction = (...args) => fn(...args)
@@ -63,7 +63,7 @@ export function useGlobalHook (name) {
 
   if (!context) {
     throw new SyntaxError(
-      'You must wrap your components with a <GlobalHooksProvider>!'
+      'You must wrap your components with a <GlobalHooksProvider>.'
     )
   }
 
@@ -71,7 +71,7 @@ export function useGlobalHook (name) {
 
   if (!value) {
     throw new ReferenceError(
-      `Provided store instance for "${name}" did not initialize correctly!`
+      `Provided store instance for "${name}" did not initialize correctly.`
     )
   }
 
@@ -81,13 +81,13 @@ export function useGlobalHook (name) {
 export function withGlobalHooks (component, hooks) {
   if (!component) {
     throw new TypeError(
-      'You cannot pass in empty component to withGlobalHooks!'
+      'You cannot pass in empty component to withGlobalHooks.'
     )
   }
 
   if ({}.toString.call(hooks) !== '[object Array]') {
     throw new TypeError(
-      'You must provide a hooks name array to initialize withGlobalHooks!'
+      'You must provide a hooks name array to initialize withGlobalHooks.'
     )
   }
 
