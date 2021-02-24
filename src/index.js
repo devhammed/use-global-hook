@@ -16,7 +16,7 @@ export function GlobalHooksProvider ({ hooks, children }) {
     globalHooks = { ...parentContext }
   }
 
-  hooks.map(hook => {
+  hooks.forEach(hook => {
     if (typeof hook !== 'function') {
       throw new TypeError(
         `Provided global hook value "${hook}" is not a function.`
@@ -94,7 +94,7 @@ export function withGlobalHooks (component, hooks) {
   const withGlobalHOC = props => {
     const stores = {}
 
-    hooks.map(hook => {
+    hooks.forEach(hook => {
       stores[hook] = useGlobalHook(hook)
     })
 
