@@ -32,7 +32,7 @@ function Counter () {
 function App () {
   return (
     <GlobalHooksProvider hooks={[counterStoreHook]}>
-      <h1>use-GLOBAL-hook</h1>
+      <h1>useGlobalHook</h1>
       <Counter />
       <Counter />
       <Counter />

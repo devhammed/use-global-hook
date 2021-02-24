@@ -42,7 +42,7 @@ export declare type StoreHook = () => any
 /**
  * Hook store function wrapper, this function apply some internally used property to a function that calls your original function. A wrapper function is best for this case as it is not a good idea to mutate your original function with properties that may conflict and third-party hooks is always taking into consideration where it is not good to add properties to the library core function and this method also allows creating clone of same hook function without conflicting names.
  */
-export declare function createGlobalHook(
+export declare function createGlobalHook (
   name: string,
   fn: (...args) => any
 ): (...args) => any
@@ -87,7 +87,9 @@ export interface GlobalHooksProviderProps {
  * )
  * ```
  */
-export declare function GlobalHooksProvider(props: GlobalHooksProviderProps): FC
+export declare function GlobalHooksProvider (
+  props: GlobalHooksProviderProps
+): FC
 
 /**
  * Next we'll need a piece to introduce our state back into the tree so that:
@@ -112,7 +114,7 @@ export declare function GlobalHooksProvider(props: GlobalHooksProviderProps): FC
  * }
  * ```
  */
-export declare function useGlobalHook(key: string): StoreHook
+export declare function useGlobalHook (key: string): StoreHook
 
 /**
  * Class components can benefit from hooks too!
@@ -145,7 +147,7 @@ use-global-hooks provides a function component HOC wrapper `withGlobalHooks` whi
  * export default withGlobalHooks(Counter, ['counterStore'])
  * ```
  */
-export declare function withGlobalHooks(
+export declare function withGlobalHooks (
   component: React.ReactElement,
   hooks: string[]
 ): React.FunctionComponent
