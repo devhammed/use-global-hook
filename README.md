@@ -2,7 +2,7 @@
 
 > Painless global state management for React using Hooks and Context API in 1KB!
 
-[![NPM](https://img.shields.io/npm/v/@devhammed/use-global-hook.svg)](https://www.npmjs.com/package/@devhammed/use-global-hook) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/@devhammed/use-global-hook.svg)](https://www.npmjs.com/package/@devhammed/use-global-hook) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Made in Nigeria](https://img.shields.io/badge/made%20in-nigeria-008751.svg?style=flat-square)](https://github.com/acekyd/made-in-nigeria)
 
 ## Installation
 
