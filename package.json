@@ -1,11 +1,11 @@
 {
   "name": "@devhammed/use-global-hook",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Painless global state management for React using Hooks and Context API in 1KB!",
   "main": "lib/index.js",
   "types": "index.d.ts",
   "private": false,
-  "homepage": "https://devhammed.github.io/use-global-hook/",
+  "homepage": "https://devhammed.github.io/use-global-hook",
   "repository": {
     "type": "git",
     "url": "https://github.com/devhammed/use-global-hook"
