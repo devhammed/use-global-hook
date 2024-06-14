@@ -12,6 +12,7 @@ export function GlobalHooksProvider ({ hooks, children }) {
     )
   }
 
+  // felt cute, might delete later...
   if (parentContext) {
     globalHooks = { ...parentContext }
   }
